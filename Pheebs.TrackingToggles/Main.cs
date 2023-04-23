@@ -5,11 +5,7 @@ using ActionMenu;
 using HarmonyLib;
 using MelonLoader;
 using Pheebs.TrackingToggles;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 [assembly: MelonInfo(typeof(TrackingToggles), "Tracking Toggles", "0.0.1", "Phoebe Potat")]
 [assembly: MelonGame("Alpha Blend Interactive", "ChilloutVR")]
@@ -18,9 +14,8 @@ namespace Pheebs.TrackingToggles
 {
     public class TrackingToggles : MelonMod
     {
-        private static bool _disableLeftArm = false;
-        private static bool _disableRightArm = false;
-        private static bool _disableBothArms = false;
+        private static bool _disableArms = false;
+        private static bool _disableLegs = false;
         private Menu lib;
 
         public override void OnInitializeMelon()
@@ -30,39 +25,35 @@ namespace Pheebs.TrackingToggles
 
         public class Menu : ActionMenuMod.Lib
         {
-            protected override string modName => "Ik Toggle";
+            protected override string modName => "Tracking Toggles";
             protected override List<MenuItem> modMenuItems()
             {
                 return new List<MenuItem>()
                 {
-                    new MenuItem("Toggle Left Arm",BuildToggleItem("Left",(x) => {_disableLeftArm = !_disableLeftArm; }),_disableLeftArm),
-                    new MenuItem("Toggle Right Arm",BuildToggleItem("Right",(x) => {_disableRightArm = !_disableRightArm; }),_disableRightArm),
-                    new MenuItem("Toggle L/R",BuildToggleItem("L/R",(x) => {_disableBothArms = !_disableBothArms; }),_disableBothArms),
+                    new MenuItem("Arms",BuildToggleItem("Arms",(x) => {_disableArms = !_disableArms; }),_disableArms),
+                    new MenuItem("Legs",BuildToggleItem("Legs",(x) => {_disableLegs = !_disableLegs; }),_disableLegs),
                 };
             }
         }
 
         public override void OnDeinitializeMelon()
         {
-            _disableLeftArm = false;
-            _disableRightArm = false;
-            _disableBothArms = false;
+            _disableArms = false;
+            _disableLegs = false;
         }
 
         public static void ToggleTracking()
         {
             if (CheckVR.Instance.hasVrDeviceLoaded)
             {
-                if (!_disableBothArms)
-                {
-                    BodySystem.TrackingLeftArmEnabled = !_disableLeftArm;
-                    BodySystem.TrackingRightArmEnabled = !_disableRightArm;
-                }
-                else
-                {
-                    BodySystem.TrackingLeftArmEnabled = !_disableBothArms;
-                    BodySystem.TrackingRightArmEnabled = !_disableBothArms;
-                }
+                //Arms
+                BodySystem.TrackingLeftArmEnabled = !_disableArms;
+                BodySystem.TrackingRightArmEnabled = !_disableArms;
+                //Legs
+                BodySystem.enableChestTracking = !_disableLegs;
+                BodySystem.enableHipTracking = !_disableLegs;
+                BodySystem.TrackingLeftLegEnabled = !_disableLegs;
+                BodySystem.TrackingRightLegEnabled = !_disableLegs;
             }
         }
 
