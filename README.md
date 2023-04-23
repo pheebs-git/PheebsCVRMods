@@ -3,7 +3,7 @@
 `Tracking Toggles`
 
 This mod allows the user to toggle tracking for their arms and lower body. 
-Do note this has not been tested with fullbody tracking so your milage may vary.
+Do note this has not been tested with fullbody tracking so your mileage may vary.
 
 NB: You will need the action menu mod [Action menu mod by Daky](https://github.com/dakyneko/DakyModsCVR)
 
